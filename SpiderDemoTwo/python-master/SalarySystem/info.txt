@@ -1,0 +1,7 @@
+Alex 3890
+Rain 80000
+Egon 50000
+Yuan 30000
+caoy 5000
+ssh 300000
+shish 500000

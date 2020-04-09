@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>three</title>
+
+</head>
+<body>
+    {% for a in first %}
+        <a href="{% url 'first_name' a.pk %}"> {{a.title}} </a>
+    {% endfor %}
+</body>
+</html>

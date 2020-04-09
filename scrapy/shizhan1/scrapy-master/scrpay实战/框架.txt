@@ -1,0 +1,109 @@
+ deactivate 退出虚拟环境
+
+
+
+创建工程
+1.scrapy startproject qianmu(项目名称)
+
+进入工程
+2.cd qianmu/
+
+创建爬虫文件
+3.scrapy genspider university qianmu.iguye.com
+或
+scrapy genspider qiubai "www.qiushibaike.com"
+
+创建的文件内函数的意思
+allowed_domains:允许的域名，就是爬取的时候这个请求要不要发送，如果是该域名之下的url，就会
+		发送，如果不是就过滤掉这个请求，这是一个列表，可以写多个允许的域名
+
+start_urls:爬虫起始url,是一个列表，里面可以写很多个，一般只写一个
+
+def parse(self,response):这个函数很重要，就是你之后写代码的地方，parse函数名是固定
+			的，当收到下载数据的时候会自动的调用这个方法，该方法第二个参数
+			为response，这是一个响应对象，从该对象中获取html字符串，然后
+			解析之。【注】这个parse函数必须返回一个可迭代的对象
+
+
+运行
+4.scrapy crawl university 
+
+保存到指定文件
+scrapy crawl university -a max_num=5 -o u.json
+
+指定数据的格式保存到指定文件
+scrapy crawl university -a max_num=5 -t csv -o u.csv
+
+保存
+scrapy crawl university -t csv -o university.csv -a max_num=10 -L INFO
+
+
+
+注意事项
+ rules = (
+        Rule(LinkExtractor(allow=r'/book/1163_\d+\.html'),
+	 callback='parse_item', follow=False),
+    )
+    
+【注】callback只能写函数名字符串
+	callback="parse_item"
+【注】在基本的spider中，如果重新发送请求，那里的callback写的是  callback=self.parse_item
+
+
+
+日志信息和日志等级
+级别：
+CRITICAL:严重错误
+ERROR:一般错误
+WARNING:警告
+INFO:一般信息
+DEBUG:调试信息
+
+默认的级别为DEBUG，会显示上面的信息
+在配置的文件中  settings.py
+LOG_FILE:
+将屏幕显示的信息全部记录打文件中，屏幕不再显示
+LOG_LEVEL:设置日志显示的等级，就是显示那些，不显示哪些
+
+
+Request和response总结
+Request
+   scrapy.Request(url=url,callback=self.parse_item,
+   meta={'item':item},headers=headers)
+   url:要请求的地址
+   callback:响应成功之后的回调函数
+   meta:参数传递
+   headers:定制头信息，一般不用
+
+response
+   response.text:字符串格式的文本
+   response.body:二进制格式的文本
+   response.url:当前响应的url地址
+   response.status:状态码
+   response，xpath（）：筛选你想要的内容
+   response.css():筛选你想要的内容
+
+
+发送post请求
+【注】如果直接发送post请求，start_urls这个列表就没有用啦，因为你重写啦start_requests（）
+		这个方法，原来的parse方法也没用啦
+百度翻译
+scrapy.FormRequest(url=url,headers=headers,callback=self.parse_item,formdata=data)
+url:要发送的post地址
+headers:可以定制头信息
+callback：回调函数
+formdata:post所携带的数据，这是一个字典
+
+
+
+
+
+
+
+
+
+
+
+
+
+
